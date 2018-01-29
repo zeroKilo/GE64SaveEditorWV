@@ -303,5 +303,29 @@ namespace GE64SaveEditor
             Aztec,
             Egypt
         }
+
+        public static Dictionary<string, uint> cheatFlags = new Dictionary<string, uint>()
+        {
+            {"Tiny Bond"        ,0x80000000},
+            {"No Radar [Multi]" ,0x40000000},
+            {"Turbo Mode"       ,0x20000000},
+            {"2x Rocket L."     ,0x10000000},
+            {"2x Grenade L."    ,0x08000000},
+            {"DK Mode"          ,0x04000000},
+            {"Invincible"       ,0x02000000},
+            {"Paintball"        ,0x01000000},
+            {"Infinite Ammo"    ,0x00800000},
+            {"2x Hunting Knife" ,0x00400000},
+            {"Silver PP7"       ,0x00200000},
+            {"Slow Animation"   ,0x00100000},
+            {"Enemy Rockets"    ,0x00080000},
+            {"Bond Invisible"   ,0x00040000},
+            {"Fast Animation"   ,0x00020000},
+            {"2x Throwing Knife",0x00010000},
+            {"All Guns"         ,0x00000800},
+            {"2x Laser"         ,0x00000400},
+            {"Gold PP7"         ,0x00000200},
+            {"2x RC-P90"        ,0x00000100},
+        };
     }
 }

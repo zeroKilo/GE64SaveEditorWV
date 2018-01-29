@@ -18,6 +18,7 @@ namespace GE64SaveEditor
         List<ushort> timesAgent;
         List<ushort> timesSAgent;
         List<ushort> times00Agent;
+        uint cheats;
         public Form1()
         {
             InitializeComponent();
@@ -43,6 +44,10 @@ namespace GE64SaveEditor
             listBox1.Items.Add("Slot 3");
             listBox1.Items.Add("Slot 4");
             listBox1.Items.Add("Slot 5");
+            comboBox1.Items.Clear();
+            foreach (string key in GE64SaveGame.cheatFlags.Keys)
+                comboBox1.Items.Add(key);
+            comboBox1.SelectedIndex = 0;
         }
 
         public void RefreshSlot()
@@ -57,9 +62,10 @@ namespace GE64SaveEditor
                 listBox4.Items.Add(save.getTimeString(times00Agent[i], i));
             }
             textBox1.Text = other[0].ToString("X4");
-            textBox2.Text = other[1].ToString("X4");
+            trackBar1.Value = (byte)(other[1] >> 8);
+            trackBar2.Value = (byte)(other[1] & 0xFF);
             textBox3.Text = other[2].ToString("X4");
-            textBox4.Text = other[3].ToString("X8");
+            cheats = other[3];
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -109,9 +115,12 @@ namespace GE64SaveEditor
             if (n == -1 || save == null || !save.isValid) return;
             other = new List<uint>();
             other.Add(Convert.ToUInt16(textBox1.Text, 16));
-            other.Add(Convert.ToUInt16(textBox2.Text, 16));
+            ushort volumes = (byte)trackBar1.Value;
+            volumes <<= 8;
+            volumes |= (byte)trackBar2.Value;
+            other.Add(volumes);
             other.Add(Convert.ToUInt16(textBox3.Text, 16));
-            other.Add(Convert.ToUInt32(textBox4.Text, 16));
+            other.Add(cheats);
             save.makeSlot(n, timesAgent, timesSAgent, times00Agent, other);
             RefreshSlot();
         }
@@ -121,6 +130,23 @@ namespace GE64SaveEditor
             if (save == null || !save.isValid) return;
             save.Save();
             MessageBox.Show("Done.");
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (save == null || !save.isValid) return;
+            uint flag = GE64SaveGame.cheatFlags[comboBox1.SelectedItem.ToString()];
+            checkBox1.Checked = (cheats & flag) != 0;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (save == null || !save.isValid) return;
+            uint flag = GE64SaveGame.cheatFlags[comboBox1.SelectedItem.ToString()];
+            if (checkBox1.Checked)
+                cheats |= flag;
+            else
+                cheats &= (0xFFFFFFFF ^ flag);
         }
     }
 }
