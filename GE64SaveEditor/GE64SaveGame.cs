@@ -19,7 +19,7 @@ namespace GE64SaveEditor
             raw = File.ReadAllBytes(path);
             uint m1 = BitConverter.ToUInt32(raw, 0);
             uint m2 = BitConverter.ToUInt32(raw, 0);
-            if (m1 == 0x33382489 && m2 == 0x33382489 && raw.Length == 0x200)
+            if (m1 == 0x33382489 && m2 == 0x33382489)
             {
                 MemoryStream m = new MemoryStream();
                 m.Write(raw, 0, 0x20);
@@ -326,6 +326,6 @@ namespace GE64SaveEditor
             {"2x Laser"         ,0x00000400},
             {"Gold PP7"         ,0x00000200},
             {"2x RC-P90"        ,0x00000100},
-        };
+        };//Magnum, Laser, Golden Gun, 
     }
 }
